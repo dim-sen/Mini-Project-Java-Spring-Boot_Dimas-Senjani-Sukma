@@ -83,5 +83,5 @@ jobs:
             docker rmi -f dimsen0/mini-project:latest dimsen0/mini-project-coverage:latest
             docker pull dimsen0/mini-project:latest
             docker pull dimsen0/mini-project-coverage:latest
-            docker run -d --rm --name mini-project -p 8000:80 dimsen0/mini-project-coverage:latest
+            docker run -d --rm --name mini-project-coverage -p 8000:80 dimsen0/mini-project-coverage:latest
             docker run -d --rm --name mini_project -p 80:8080 --env-file=.dev.env --network dimsen0/mini-project:latest
