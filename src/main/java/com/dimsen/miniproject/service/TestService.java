@@ -16,8 +16,8 @@ public class TestService {
         return ResponseUtil.build(AppConstant.ResponseCode.HELLO, null, HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> dataNotFound() {
+    public ResponseEntity<Object> error() {
         log.info("Test Response Data not Found");
-        return ResponseUtil.build(AppConstant.ResponseCode.DATA_NOT_FOUND, null, HttpStatus.BAD_REQUEST);
+        return ResponseUtil.build(AppConstant.ResponseCode.INTERNAL_SERVER_ERROR, null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

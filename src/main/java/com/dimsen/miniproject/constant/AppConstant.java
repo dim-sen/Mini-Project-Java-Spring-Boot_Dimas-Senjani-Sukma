@@ -9,7 +9,7 @@ public class AppConstant {
 
         SUCCESS("SUCCESS", "Success!"),
         DATA_NOT_FOUND("DATA_NOT_FOUND", "Data not found!"),
-        UNKNOWN_ERROR("UNKNOWN_ERROR", "Happened unknown error!"),
+        INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "Internal Server Error"),
         HELLO("SUCCESS", "Hello Spring boot");
 
         private final String code;

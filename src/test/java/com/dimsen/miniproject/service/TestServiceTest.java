@@ -25,7 +25,7 @@ class TestServiceTest {
 
     @Test
     void dataNotFound_Test() {
-        ResponseEntity<Object> responseEntity = testService.dataNotFound();
+        ResponseEntity<Object> responseEntity = testService.error();
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
     }
 
