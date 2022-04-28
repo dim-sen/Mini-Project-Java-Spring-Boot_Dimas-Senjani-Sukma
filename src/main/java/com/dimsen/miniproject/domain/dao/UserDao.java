@@ -1,5 +1,6 @@
 package com.dimsen.miniproject.domain.dao;
 
+import com.dimsen.miniproject.constant.AppConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,10 +28,12 @@ public class UserDao {
     private String password;
 
     @Column(name = "role", nullable = false)
-    private String role;
+    @Enumerated(EnumType.ORDINAL)
+    private AppConstant.UserRole role;
 
     @Column(name = "account_status", nullable = false)
-    private String accountStatus;
+    @Enumerated(EnumType.ORDINAL)
+    private AppConstant.AccountStatus accountStatus;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProfileTypeDao> profileTypeDaoList;
