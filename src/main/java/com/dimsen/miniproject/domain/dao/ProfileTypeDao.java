@@ -1,12 +1,14 @@
 package com.dimsen.miniproject.domain.dao;
 
+import com.dimsen.miniproject.domain.common.BaseDao;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -14,11 +16,13 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "PROFILE_TYPE")
-public class ProfileTypeDao {
+@SQLDelete(sql = "UPDATE PROFILE_TYPE SET is_deleted = true WHERE id =?")
+@Where(clause = "is_deleted = false")
+public class ProfileTypeDao extends BaseDao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -47,13 +51,9 @@ public class ProfileTypeDao {
     @Column(name = "profile_image", nullable = false)
     private String profileImage;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//    @OneToOne(mappedBy = "profileType")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserDao user;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<JobInformationDao> companies;
-
-    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<JobInformationDao> applicants;
 }
