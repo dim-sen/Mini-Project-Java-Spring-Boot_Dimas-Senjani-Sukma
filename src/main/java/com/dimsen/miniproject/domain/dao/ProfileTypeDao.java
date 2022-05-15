@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "PROFILE_TYPE")
-@SQLDelete(sql = "UPDATE PROFILE_TYPE SET is_deleted = true WHERE id =?")
+@SQLDelete(sql = "UPDATE PROFILE_TYPE SET is_deleted = true WHERE user_id =?")
 @Where(clause = "is_deleted = false")
 public class ProfileTypeDao extends BaseDao {
 
@@ -51,8 +51,7 @@ public class ProfileTypeDao extends BaseDao {
     @Column(name = "profile_image", nullable = false)
     private String profileImage;
 
-//    @OneToOne(mappedBy = "profileType")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserDao user;
 

@@ -1,7 +1,7 @@
 package com.dimsen.miniproject.controller;
 
 import com.dimsen.miniproject.domain.dto.UserDto;
-import com.dimsen.miniproject.service.UserService;
+import com.dimsen.miniproject.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UsersService userService;
 
-    @PostMapping(value = "")
-    public ResponseEntity<Object> createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
-    }
+//    @PostMapping(value = "")
+//    public ResponseEntity<Object> createUser(@RequestBody UserDto userDto) {
+//        return userService.createUser(userDto);
+//    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable Long id) {
