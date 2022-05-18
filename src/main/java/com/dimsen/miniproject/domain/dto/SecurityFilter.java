@@ -1,6 +1,7 @@
 package com.dimsen.miniproject.domain.dto;
 
-import lombok.RequiredArgsConstructor;
+import com.dimsen.miniproject.service.UserDetailsServiceImpl;
+import com.dimsen.miniproject.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,15 +22,19 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
     private static final String JWT_HEADER = "Authorization";
     private static final String JWT_TOKEN_PREFIX = "Bearer ";
 
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-    private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -37,13 +42,13 @@ public class SecurityFilter extends OncePerRequestFilter {
         try {
             log.info("Do filter internal");
             String token = getJwtFromRequest(request);
-            if (token != null && !token.isBlank() && jwtTokenProvider.validateToken(token)) {
+            if (token != null && jwtTokenProvider.validateToken(token)) {
                 log.info("Token not null");
                 String username = jwtTokenProvider.getUsername(token);
                 log.info("Username : {}", username);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+                        userDetails, /*userDetails.getPassword()*/ null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }

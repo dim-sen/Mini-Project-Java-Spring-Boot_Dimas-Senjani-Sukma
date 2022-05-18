@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,24 +22,13 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-
-//public class UsersService{
-public class UsersService implements UserDetailsService{
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDao userDao = userRepository.getDistinctTopByUsername(username);
-        if (userDao == null) {
-            throw new UsernameNotFoundException("Username not found");
-        }
-        return userDao;
-    }
 
     public ResponseEntity<Object> getUserById(Long id) {
         log.info("Getting a user by id");

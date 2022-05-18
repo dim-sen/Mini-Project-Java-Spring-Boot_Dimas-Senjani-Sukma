@@ -8,12 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +22,7 @@ import java.util.List;
 @Table(name = "USER")
 @SQLDelete(sql = "UPDATE USER SET is_deleted = true WHERE id =?")
 @Where(clause = "is_deleted = false")
-public class UserDao extends BaseDao implements UserDetails {
+public class UserDao extends BaseDao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,43 +35,19 @@ public class UserDao extends BaseDao implements UserDetails {
     private String password;
 
     @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private AppConstant.UserRole role;
+//    private Set<AppConstant.UserRole> role = new HashSet<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProfileTypeDao profileType;
+
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Set<ProfileTypeDao> profileType = new HashSet<>();
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<JobInformationDao> companies;
 
     @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ApplicationDao> applicants;
-
-    @Column(columnDefinition = "boolean default true")
-    private boolean active = true;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return active;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return active;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return active;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return active;
-    }
 }

@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = UsersService.class)
+@SpringBootTest(classes = UserService.class)
 class UsersServiceTest {
 
     @MockBean
@@ -34,41 +34,7 @@ class UsersServiceTest {
     private ModelMapper modelMapper;
 
     @Autowired
-    private UsersService userService;
-
-//    @Test
-//    void testCreateNewUserSucceed() {
-//        UserDao userDao = UserDao.builder()
-//                .id(1L)
-//                .username("New User")
-//                .build();
-//
-//        UserDto userDto = UserDto.builder()
-//                .id(1L)
-//                .username("New User")
-//                .build();
-//
-//        ResponseEntity<Object> response = usersService.createUser(UserDto.builder()
-//                        .username("New User")
-//                .build());
-//
-//        ApiResponse apiResponse = (ApiResponse) response.getBody();
-//
-//        UserDto dto = (UserDto) Objects.requireNonNull(apiResponse).getData();
-//        assertEquals(1L, userDto.getId());
-//        assertEquals("New User", userDto.getUsername());
-//    }
-//
-//    @Test
-//    void testCreateNewUserFailed() {
-//        when(userRepository.save(any())).thenThrow(NullPointerException.class);
-//
-//        ApiResponse apiResponse = (ApiResponse) userService.createUser(UserDto.builder()
-//                        .username("New User")
-//                .build()).getBody();
-//
-//        assertEquals(AppConstant.ResponseCode.UNKNOWN_ERROR.getCode(), Objects.requireNonNull(apiResponse).getStatus().getCode());
-//    }
+    private UserService userService;
 
     @Test
     void testGetUserByIdSucceed() {

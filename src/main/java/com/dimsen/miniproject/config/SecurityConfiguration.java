@@ -1,12 +1,14 @@
 package com.dimsen.miniproject.config;
 
-import com.dimsen.miniproject.constant.AppConstant;
+import com.dimsen.miniproject.domain.dto.AuthEntryPointJwt;
 import com.dimsen.miniproject.domain.dto.SecurityFilter;
-import lombok.RequiredArgsConstructor;
+import com.dimsen.miniproject.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,11 +20,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
-    private final SecurityFilter securityFilter;
+    @Autowired
+    private AuthEntryPointJwt unAuthHandler;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService usersService;
+
+    @Autowired
+    private SecurityFilter securityFilter;
+
+//    @Bean
+//    public SecurityFilter securityFilter() {
+//        return new SecurityFilter();
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -35,24 +51,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    @Bean
+//    @Override
+//    @Bean
+//    protected AuthenticationManager authenticationManager() throws Exception {
+//        return super.authenticationManager();
+//    }
+
+//    @Bean
     @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable();
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unAuthHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/h2-console/**").permitAll();
-//                .antMatchers("/information/**").hasAnyRole(String.valueOf(AppConstant.UserRole.COMPANY))
-//                .anyRequest().authenticated();
+                .antMatchers("/v1/auth/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .anyRequest().authenticated();
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        http.headers().frameOptions().disable();
         http.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
