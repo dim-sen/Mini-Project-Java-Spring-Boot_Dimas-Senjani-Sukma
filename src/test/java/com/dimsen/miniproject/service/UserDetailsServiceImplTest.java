@@ -64,7 +64,7 @@ class UserDetailsServiceImplTest {
         Collection<? extends GrantedAuthority> authorities = actualLoadUserByUsernameResult.getAuthorities();
 
         assertEquals(1L, ((UserDetailsDao) actualLoadUserByUsernameResult).getId().longValue());
-        assertEquals("janedoe", actualLoadUserByUsernameResult.getUsername());
+        assertEquals("dim", actualLoadUserByUsernameResult.getUsername());
         assertEquals("iloveyou", actualLoadUserByUsernameResult.getPassword());
     }
 
