@@ -7,10 +7,10 @@ public class AppConstant {
 
     public enum ResponseCode {
 
-        SUCCESS("SUCCESS", "Success!"),
-        DATA_NOT_FOUND("DATA_NOT_FOUND", "Data not found!"),
+        SUCCESS("SUCCESS", "Success"),
+        DATA_NOT_FOUND("DATA_NOT_FOUND", "Data not found"),
         INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "Internal Server Error"),
-        HELLO("SUCCESS", "Hello Spring boot");
+        UNKNOWN_ERROR("UNKNOWN_ERROR", "Unknown Error Happened");
 
         private final String code;
         private final String message;
