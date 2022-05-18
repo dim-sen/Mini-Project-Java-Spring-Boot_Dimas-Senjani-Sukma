@@ -50,4 +50,5 @@ public class UserDao extends BaseDao {
     @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ApplicationDao> applicants;
 
+
 }
