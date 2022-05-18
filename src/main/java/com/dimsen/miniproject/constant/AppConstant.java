@@ -5,11 +5,11 @@ public class AppConstant {
 
     public static final String DEFAULT_SYSTEM = "SYSTEM";
 
-    public static enum ResponseCode {
+    public enum ResponseCode {
 
         SUCCESS("SUCCESS", "Success!"),
         DATA_NOT_FOUND("DATA_NOT_FOUND", "Data not found!"),
-        UNKNOWN_ERROR("UNKNOWN_ERROR", "Happened unknown error!"),
+        INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "Internal Server Error"),
         HELLO("SUCCESS", "Hello Spring boot");
 
         private final String code;
@@ -28,5 +28,36 @@ public class AppConstant {
             return this.message;
         }
 
+    }
+
+    public enum UserRole {
+        COMPANY("company"),
+        APPLICANT("applicant");
+
+        private final String role;
+
+        UserRole(String role) {
+            this.role = role;
+        }
+
+        public String getRole() {
+            return role;
+        }
+    }
+
+    public enum AccountStatus {
+        OPEN("open"),
+        EXPIRED("expired"),
+        LOCKED("locked");
+
+        private final String status;
+
+        AccountStatus(String status) {
+            this.status = status;
+        }
+
+        public String getStatus() {
+            return status;
+        }
     }
 }
