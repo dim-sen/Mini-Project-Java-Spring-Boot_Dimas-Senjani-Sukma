@@ -51,7 +51,6 @@ public class ProfileTypeService {
                     .username(userDao.getUsername())
                     .password(userDao.getPassword())
                     .role(userDao.getRole())
-                    .accountStatus(userDao.getAccountStatus())
                     .build();
 
             ProfileTypeDao profileTypeDao = ProfileTypeDao.builder()

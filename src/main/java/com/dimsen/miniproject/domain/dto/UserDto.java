@@ -1,7 +1,6 @@
 package com.dimsen.miniproject.domain.dto;
 
 import com.dimsen.miniproject.constant.AppConstant;
-import com.dimsen.miniproject.domain.dao.ProfileTypeDao;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -25,7 +24,5 @@ public class UserDto {
     private String password;
 
     private AppConstant.UserRole role;
-
-    private AppConstant.AccountStatus accountStatus;
 
 }

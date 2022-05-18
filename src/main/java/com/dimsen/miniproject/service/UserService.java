@@ -1,7 +1,6 @@
 package com.dimsen.miniproject.service;
 
 import com.dimsen.miniproject.constant.AppConstant;
-import com.dimsen.miniproject.domain.dao.ProfileTypeDao;
 import com.dimsen.miniproject.domain.dao.UserDao;
 import com.dimsen.miniproject.domain.dto.UserDto;
 import com.dimsen.miniproject.repository.UserRepository;
@@ -11,6 +10,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,26 +29,6 @@ public class UserService {
 
     @Autowired
     private ModelMapper modelMapper;
-
-    public ResponseEntity<Object> createUser(UserDto userDto) {
-        log.info("Creating new User");
-        try {
-            log.info("Save new user");
-            UserDao userDao = UserDao.builder()
-                    .username(userDto.getUsername())
-                    .password(userDto.getPassword())
-                    .role(userDto.getRole())
-                    .accountStatus(userDto.getAccountStatus())
-                    .build();
-            userRepository.save(userDao);
-
-            UserDto dto = modelMapper.map(userDao, UserDto.class);
-            return ResponseUtil.build(AppConstant.ResponseCode.SUCCESS, dto, HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("An error occurred in creating new user. Error {}", e.getMessage());
-            return ResponseUtil.build(AppConstant.ResponseCode.UNKNOWN_ERROR, null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     public ResponseEntity<Object> getUserById(Long id) {
         log.info("Getting a user by id");
@@ -100,8 +83,6 @@ public class UserService {
             UserDao userDao = optionalUserDao.get();
             userDao.setUsername(userDto.getUsername());
             userDao.setPassword(userDto.getPassword());
-//            userDao.setRole();
-//            userDao.setAccountStatus();
             userRepository.save(userDao);
 
             UserDto dto = modelMapper.map(userDao, UserDto.class);
@@ -123,7 +104,7 @@ public class UserService {
             }
 
             log.info("User found");
-            userRepository.delete(optionalUserDao.get());
+            userRepository.deleteById(optionalUserDao.get().getId());
             return ResponseUtil.build(AppConstant.ResponseCode.SUCCESS, null, HttpStatus.OK);
         } catch (Exception e) {
             log.error("An error occurred in deleting user by id. Error: {}", e.getMessage());

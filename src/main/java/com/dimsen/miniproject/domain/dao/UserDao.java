@@ -10,7 +10,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -33,22 +35,19 @@ public class UserDao extends BaseDao {
     private String password;
 
     @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private AppConstant.UserRole role;
+//    private Set<AppConstant.UserRole> role = new HashSet<>();
 
-    @Column(name = "account_status", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private AppConstant.AccountStatus accountStatus;
-
-//    @OneToOne(cascade = CascadeType.ALL)
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProfileTypeDao profileType;
+
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Set<ProfileTypeDao> profileType = new HashSet<>();
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<JobInformationDao> companies;
 
     @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ApplicationDao> applicants;
-
-
 }
