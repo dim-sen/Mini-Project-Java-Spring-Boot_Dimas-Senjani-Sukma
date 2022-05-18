@@ -1,9 +1,14 @@
 name: Spring Boot Mini Project
 
 on:
-  push:
+  pull_request:
     branches:
-      - feature_jacoco
+      - development
+
+#  push:
+#    branches:
+#      - feature_jacoco
+
 jobs:
   run_test:
     name: Unit Test
