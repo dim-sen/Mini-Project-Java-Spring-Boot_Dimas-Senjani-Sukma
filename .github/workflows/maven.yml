@@ -1,13 +1,14 @@
 name: Spring Boot Mini Project
 
-on:
-  pull_request:
-    branches:
-      - development
-
-#  push:
+#on:
+#  pull_request:
 #    branches:
-#      - feature_jacoco
+#      - development
+
+on:
+  push:
+    branches:
+      - feature/swagger
 
 jobs:
   run_test:
